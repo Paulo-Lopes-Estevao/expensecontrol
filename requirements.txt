@@ -1,0 +1,11 @@
+fastapi
+h11
+httptools
+pydantic
+uvicorn
+uvloop
+aiosqlite
+databases
+psycopg2-binary
+python-dotenv
+fastapi-sqlalchemy
