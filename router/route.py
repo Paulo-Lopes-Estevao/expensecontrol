@@ -19,13 +19,6 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/")
-async def root():
-    return {
-        "Hello": "Welcome to the Spending API",
-        "Github": "https://github.com/Paulo-Lopes-Estevao/expensecontrol",
-        "Documentation Swegger": "https://fast-hamlet-77449.herokuapp.com/docs"
-        }
 
 @router.get("/spent")
 async def home(db: Session = Depends(get_db)):

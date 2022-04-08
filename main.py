@@ -15,9 +15,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-"""
 
-"""
+@app.get("/")
+async def root():
+    return {
+        "Hello": "Welcome to the Spending API",
+        "Github": "https://github.com/Paulo-Lopes-Estevao/expensecontrol",
+        "Documentation Swegger": "https://fast-hamlet-77449.herokuapp.com/docs"
+        }
 app.include_router(router)
 
 if __name__ == '__main__':
