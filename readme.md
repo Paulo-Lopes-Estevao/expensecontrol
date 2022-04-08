@@ -5,4 +5,4 @@ average spend per month of each user.
 ## Heroku
 click on the link below to see the documentation of the API 👇
 
-👉 [documentation swegger (Open API)](https://indisponivel.com)
+👉 [documentation swegger (Open API)](https://fast-hamlet-77449.herokuapp.com/docs)
