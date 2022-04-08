@@ -1,7 +1,8 @@
-from sqlalchemy import Column, DateTime, Integer, String, Float,Enum
+import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String, Float,Enum, extract, and_, func
 from sqlalchemy.orm import Session
 import schema
-from sqlalchemy.sql import func
 from config.database import Base
 
 
@@ -22,3 +23,33 @@ class Spent(Base):
         db.commit()
         db.refresh(db_spent)
         return db_spent
+
+    def SpentGetAll(db: Session):
+        db_spent = db.query(Spent).all()
+        return db_spent
+
+    def SpentGetReason(db: Session, reason: str):
+        db_spent = db.query(func.avg(Spent.amount).label('average_spent_per_month')).filter(and_(extract('month',Spent.date) == datetime.datetime.now().month, (Spent.reason == reason)))
+        return db_spent[0]
+
+
+
+    def SpentUpdate(spent: schema.Spent, id: str, db: Session):
+        db_spent = db.query(Spent).filter(Spent.id == id)
+        data = verifyValueSpent(**spent.dict())
+
+        db_spent.all()[0].amount = data.get("amount",None)
+        db_spent.all()[0].reason = data.get("reason",)
+        db_spent.all()[0].priority = data.get("priority",None)
+        db.commit()
+        return "dados atualizado"
+
+    def SpentDelete(id, db: Session):
+        db.query(Spent).filter(Spent.id == id).delete()
+        db.commit()
+        return "dados apagados"
+
+
+def verifyValueSpent(**kwargs):
+    result = {k: v for k, v in kwargs.items() if v != "string"}
+    return result
