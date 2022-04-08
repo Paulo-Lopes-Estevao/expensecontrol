@@ -19,18 +19,34 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/")
-async def root():
-    return {"message": "Hello World"}
+@router.get("/spent")
+async def root(db: Session = Depends(get_db)):
+    return EntitySpent.SpentGetAll(db)
 
 @router.post("/spent", response_model=SchemaSpent)
 async def spent_create(spent: SchemaSpent, db: Session = Depends(get_db)):
     try:
-        return EntitySpent.SpentCreate(db, spent)
+        return await EntitySpent.SpentCreate(db, spent)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/spent", response_model=SchemaSpent)
-async def spent_list():
-    db_sent = db.session.query(EntitySpent).all()
-    return db_sent
+@router.get("/spent/{reason}")
+async def spent_list(reason: str, db : Session = Depends(get_db)):
+    try:
+        return await EntitySpent.SpentGetReason(db,reason)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(f"not found {e}"))
+
+@router.put("/spent/{id}")
+async def spent_update(spent: SchemaSpent, id: str, db : Session = Depends(get_db)):
+    try:
+        return EntitySpent.SpentUpdate(spent, id, db)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(f"not found {e}"))
+
+@router.delete("/spent/{id}")
+async def spent_delete(id: str, db: Session =Depends(get_db)):
+    try:
+        return EntitySpent.SpentDelete(id, db)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(f"not found {e}"))
