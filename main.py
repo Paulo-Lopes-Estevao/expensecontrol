@@ -1,8 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-import os
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi_sqlalchemy import DBSessionMiddleware
 from router.route import router
 from config.env import *
 
