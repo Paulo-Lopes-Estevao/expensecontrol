@@ -6,7 +6,9 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from router.route import router
 from config.env import *
 
-app = FastAPI()
+app = FastAPI(
+    redoc_url=False
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,4 +23,4 @@ app.add_middleware(
 app.include_router(router)
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=os.getenv("PORT"))
