@@ -27,14 +27,14 @@ async def home(db: Session = Depends(get_db)):
 @router.post("/spent", response_model=SchemaSpent)
 async def spent_create(spent: SchemaSpent, db: Session = Depends(get_db)):
     try:
-        return await EntitySpent.SpentCreate(db, spent)
+        return EntitySpent.SpentCreate(db, spent)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/spent/{reason}")
 async def spent_list(reason: str, db : Session = Depends(get_db)):
     try:
-        return await EntitySpent.SpentGetReason(db,reason)
+        return EntitySpent.SpentGetReason(db,reason)
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(f"not found {e}"))
 
